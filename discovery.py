@@ -38,7 +38,7 @@ class Discovery:
         #make the initial connection to the switch & get the cdp neighbors
         net_connect = ConnectHandler(**self.device())
         net_connect.enable()
-        neighbors = net_connect.send_command('show cdp neighbors')
+        neighbors = net_connect.send_command('show cdp neighbors detail', use_textfsm=True)
 
         #close the connection
         net_connect.disconnect()
@@ -50,3 +50,4 @@ class Discovery:
 if __name__ == "__main__":
     discover = Discovery()
     print(discover.static_discovery())
+    print(type(discover.static_discovery()))
