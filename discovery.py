@@ -1,6 +1,9 @@
+from nornir.core.inventory import Host
+from config_templates import host_schema
 from netmiko import ConnectHandler
 from dotenv import load_dotenv
-import nornir
+import pprint as p
+import json
 import yaml
 import os
 
@@ -16,6 +19,8 @@ class Discovery:
         self.switch_user = os.environ.get('switch_user')
         self.switch_pass = os.environ.get('switch_pass')
         self.switch_enable = os.environ.get('switch_enable')
+        self.host_schema = host_schema
+        self.hosts = []
 
     
     def device(self) -> dict:
@@ -45,9 +50,49 @@ class Discovery:
 
         return neighbors
 
+    def static_discovery_inventory(self):
+        '''
+        This function is for creating an inventory files with yaml on a fresh project 
+        '''
+        
+        devices = self.static_discovery()
+        
+        for device in devices:
+            self.host_dict = self.host_schema.copy()
+            if device.get('mgmt_address') not in self.excluded_ips: 
+                
+                self.host_dict["name"] = device.get('mgmt_address')
+                self.host_dict["hostname"] = device.get('neighbor_name')
+                self.host_dict["port"] = device.get('local_interface')
+                self.host_dict["username"] = self.switch_user
+                self.host_dict["password"] = self.switch_pass
+                self.host_schema["platform"] = device.get('platform') + ' ' + device.get('neighbor_description')
 
+                #append schema to the hosts list and add mgmt ip to the excluded ips list
+                self.hosts.append(self.host_dict)
+                self.excluded_ips.append(device.get('mgmt_ip'))
+
+                #write to the hosts yaml file
+                self.write_inventory_yaml(data=self.hosts)
+            
+        
+        return self.hosts
+
+    def write_inventory_yaml(self, data: dict, inventory_type: str = 'hosts'):
+        '''
+        this function writes to the yaml file and defaults to writing to the hosts yaml file
+        '''
+        
+        file = ''
+        if inventory_type == 'hosts': file = 'hosts.yaml' 
+        elif inventory_type == 'groups': file = 'groups.yaml'
+
+        # Write to a YAML file
+        with open(file, 'w') as f:
+            yaml.dump(data, f, default_flow_style=False)
     
 if __name__ == "__main__":
+    #print(json.dumps(Host.schema(), indent=4))
     discover = Discovery()
-    print(discover.static_discovery())
-    print(type(discover.static_discovery()))
+    p.pprint(discover.static_discovery_inventory())
+    # print(type(discover.static_discovery()))
