@@ -56,6 +56,7 @@ class Discovery:
         '''
         
         devices = self.static_discovery()
+        print(devices)
         
         for device in devices:
             self.host_dict = self.host_schema.copy()
@@ -66,7 +67,7 @@ class Discovery:
                 self.host_dict["port"] = device.get('local_interface')
                 self.host_dict["username"] = self.switch_user
                 self.host_dict["password"] = self.switch_pass
-                self.host_schema["platform"] = device.get('platform') + ' ' + device.get('neighbor_description')
+                self.host_dict["platform"] = device.get('platform') + ' ' + device.get('neighbor_description')
 
                 #append schema to the hosts list and add mgmt ip to the excluded ips list
                 self.hosts.append(self.host_dict)

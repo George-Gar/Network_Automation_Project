@@ -5,7 +5,8 @@
   hostname: Router
   name: 192.168.2.12
   password: George1347$
-  platform: str
+  platform: cisco CSR1000V Cisco IOS Software [Amsterdam], Virtual XE Software (X86_64_LINUX_IOSD-UNIVERSALK9-M),
+    Version 17.3.8a, RELEASE SOFTWARE (fc3)
   port: Ethernet0/2
   username: garciag1646
 - data: *id001

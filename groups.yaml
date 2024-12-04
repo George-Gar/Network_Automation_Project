@@ -1,0 +1,16 @@
+global:
+    data:
+        domain: local
+        asn: 19399
+garcia_net:
+    data:
+        domain: net_garcia
+        asn: 19999
+        vlans:
+            - 100
+            - 200
+            - 300
+aby_net:
+    groups:
+        - garcia_net
+
