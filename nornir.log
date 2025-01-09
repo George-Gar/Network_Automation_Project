@@ -1,0 +1,43 @@
+2025-01-09 16:21:45,560 -  nornir.core -     INFO -        run() - Running task 'netmiko_send_command' with args {'command_string': 'sh ip int br'} on 1 hosts
+2025-01-09 16:21:45,566 - nornir.core.task -    ERROR -      start() - Host 'inventory': task 'netmiko_send_command' failed with traceback:
+Traceback (most recent call last):
+  File "/Users/george/Documents/Dev/Network_Automation/autoinstall_lab/.venv/lib/python3.11/site-packages/nornir/core/task.py", line 99, in start
+    r = self.task(self, **self.params)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/george/Documents/Dev/Network_Automation/autoinstall_lab/.venv/lib/python3.11/site-packages/nornir_netmiko/tasks/netmiko_send_command.py", line 26, in netmiko_send_command
+    net_connect = task.host.get_connection(CONNECTION_NAME, task.nornir.config)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/george/Documents/Dev/Network_Automation/autoinstall_lab/.venv/lib/python3.11/site-packages/nornir/core/inventory.py", line 494, in get_connection
+    self.open_connection(
+  File "/Users/george/Documents/Dev/Network_Automation/autoinstall_lab/.venv/lib/python3.11/site-packages/nornir/core/inventory.py", line 546, in open_connection
+    conn_obj.open(
+  File "/Users/george/Documents/Dev/Network_Automation/autoinstall_lab/.venv/lib/python3.11/site-packages/nornir_netmiko/connections/netmiko.py", line 59, in open
+    connection = ConnectHandler(**parameters)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/george/Documents/Dev/Network_Automation/autoinstall_lab/.venv/lib/python3.11/site-packages/netmiko/ssh_dispatcher.py", line 390, in ConnectHandler
+    device_type = kwargs["device_type"]
+                  ~~~~~~^^^^^^^^^^^^^^^
+KeyError: 'device_type'
+
+2025-01-09 16:26:47,882 -  nornir.core -     INFO -        run() - Running task 'netmiko_send_command' with args {'command_string': 'sh ip int br'} on 1 hosts
+2025-01-09 16:26:47,890 - nornir.core.task -    ERROR -      start() - Host 'inventory': task 'netmiko_send_command' failed with traceback:
+Traceback (most recent call last):
+  File "/Users/george/Documents/Dev/Network_Automation/autoinstall_lab/.venv/lib/python3.11/site-packages/nornir/core/task.py", line 99, in start
+    r = self.task(self, **self.params)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/george/Documents/Dev/Network_Automation/autoinstall_lab/.venv/lib/python3.11/site-packages/nornir_netmiko/tasks/netmiko_send_command.py", line 26, in netmiko_send_command
+    net_connect = task.host.get_connection(CONNECTION_NAME, task.nornir.config)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/george/Documents/Dev/Network_Automation/autoinstall_lab/.venv/lib/python3.11/site-packages/nornir/core/inventory.py", line 494, in get_connection
+    self.open_connection(
+  File "/Users/george/Documents/Dev/Network_Automation/autoinstall_lab/.venv/lib/python3.11/site-packages/nornir/core/inventory.py", line 546, in open_connection
+    conn_obj.open(
+  File "/Users/george/Documents/Dev/Network_Automation/autoinstall_lab/.venv/lib/python3.11/site-packages/nornir_netmiko/connections/netmiko.py", line 59, in open
+    connection = ConnectHandler(**parameters)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/george/Documents/Dev/Network_Automation/autoinstall_lab/.venv/lib/python3.11/site-packages/netmiko/ssh_dispatcher.py", line 390, in ConnectHandler
+    device_type = kwargs["device_type"]
+                  ~~~~~~^^^^^^^^^^^^^^^
+KeyError: 'device_type'
+
+2025-01-09 16:41:57,155 -  nornir.core -     INFO -        run() - Running task 'netmiko_send_command' with args {'command_string': 'sh ip int br'} on 2 hosts

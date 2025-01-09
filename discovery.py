@@ -1,5 +1,5 @@
 from nornir.core.inventory import Host
-from config_templates import host_schema
+from config_templates import inventory_data
 from netmiko import ConnectHandler
 from dotenv import load_dotenv
 import pprint as p
@@ -19,7 +19,7 @@ class Discovery:
         self.switch_user = os.environ.get('switch_user')
         self.switch_pass = os.environ.get('switch_pass')
         self.switch_enable = os.environ.get('switch_enable')
-        self.host_schema = host_schema
+        self.inventory = inventory_data['inventory']['hosts']
         self.hosts = []
 
     
@@ -34,7 +34,7 @@ class Discovery:
             }
         return device
     
-    def static_discovery(self):
+    def static_discovery(self) -> dict:
         '''
         function for discovering devices and creating an inventory in hosts.yaml if its an initial device configuration
         of switches/routers that are only attached to one switch connected to the network that are giving the rest of
@@ -50,34 +50,24 @@ class Discovery:
 
         return neighbors
 
-    def static_discovery_inventory(self):
+    def static_discovery_inventory(self) -> dict:
         '''
         This function is for creating an inventory files with yaml on a fresh project 
         '''
         
         devices = self.static_discovery()
-        print(devices)
         
         for device in devices:
-            self.host_dict = self.host_schema.copy()
             if device.get('mgmt_address') not in self.excluded_ips: 
-                
-                self.host_dict["name"] = device.get('mgmt_address')
-                self.host_dict["hostname"] = device.get('neighbor_name')
-                self.host_dict["port"] = device.get('local_interface')
-                self.host_dict["username"] = self.switch_user
-                self.host_dict["password"] = self.switch_pass
-                self.host_dict["platform"] = device.get('platform') + ' ' + device.get('neighbor_description')
+                self.inventory[device['mgmt_address']] = {}
+                self.inventory[device['mgmt_address']]['hostname'] = device['mgmt_address']
+                self.inventory[device['mgmt_address']]['port'] = 22
+                self.inventory[device['mgmt_address']]['username'] = self.switch_user
+                self.inventory[device['mgmt_address']]['password'] = self.switch_pass
+                self.inventory[device['mgmt_address']]['platform'] = "cisco_ios"
 
-                #append schema to the hosts list and add mgmt ip to the excluded ips list
-                self.hosts.append(self.host_dict)
-                self.excluded_ips.append(device.get('mgmt_ip'))
 
-                #write to the hosts yaml file
-                self.write_inventory_yaml(data=self.hosts)
-            
-        
-        return self.hosts
+        return self.inventory
 
     def write_inventory_yaml(self, data: dict, inventory_type: str = 'hosts'):
         '''
@@ -95,5 +85,5 @@ class Discovery:
 if __name__ == "__main__":
     #print(json.dumps(Host.schema(), indent=4))
     discover = Discovery()
-    p.pprint(discover.static_discovery_inventory())
-    # print(type(discover.static_discovery()))
+    data = discover.static_discovery_inventory()
+    discover.write_inventory_yaml(data=data)
