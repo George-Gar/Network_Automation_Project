@@ -25,7 +25,7 @@ class IOSUpgrade:
         destination_file = self.ios_file  # The firmware file name to save as on the device
 
         # Define the command to copy the file from the TFTP server
-        command = f"copy tftp://{tftp_server_ip}/{source_file} flash:{destination_file}"
+        command = f"copy tftp://{tftp_server_ip}/srv/tftp/{source_file} flash:{destination_file}"
 
         # Send the command to all devices
         result = self.nr.run(
@@ -70,7 +70,7 @@ class IOSUpgrade:
 
 if __name__ == "__main__":
     ios_file = input("Please enter the filename of the firmware you wish to upgrade to: ")
-    ios_copy_install = IOSUpgrade(ios_file)
+    ios_copy_install = IOSUpgrade()
     
     # Step 1: Copy the IOS firmware from the TFTP server
     ios_copy_install.copy_ios_from_tftp()
